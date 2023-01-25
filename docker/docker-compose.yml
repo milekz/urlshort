@@ -1,0 +1,20 @@
+version: '3'
+services:
+    mongo:
+        image: mongo:6
+        restart: unless-stopped
+        volumes:
+          - /docker/mongo/db:/data/db
+
+
+    urlshort:
+        image: urlshort:latest
+        restart: unless-stopped
+        ports:
+          - 127.0.0.1:3000:3000
+        links:
+          - mongo
+        environment:
+          - PORT=3000
+          - DBURI=mongo:27017/short
+
